@@ -14,7 +14,7 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Title can't be empty!")
+    @NotBlank(message = "Title cannot be empty")
     @Column(nullable = false)
     private String title;
 
@@ -32,6 +32,10 @@ public class Todo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    // New field for drag and drop ordering
+    @Column(name = "display_order")
+    private Integer displayOrder = 0;
+
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
@@ -39,6 +43,9 @@ public class Todo {
         }
         if (priority == null) {
             priority = Priority.LOW;
+        }
+        if (displayOrder == null) {
+            displayOrder = 0;
         }
     }
 
@@ -60,4 +67,7 @@ public class Todo {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Integer getDisplayOrder() { return displayOrder; }
+    public void setDisplayOrder(Integer displayOrder) { this.displayOrder = displayOrder; }
 }
