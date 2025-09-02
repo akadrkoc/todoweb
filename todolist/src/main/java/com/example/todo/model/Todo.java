@@ -14,7 +14,7 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Title can't be empty")
+    @NotBlank(message = "Title can't be empty!")
     @Column(nullable = false)
     private String title;
 
