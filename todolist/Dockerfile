@@ -2,6 +2,7 @@
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 COPY . .
+RUN chmod +x mvnw
 RUN ./mvnw package -Dmaven.test.skip=true
 
 # Build-up stage
