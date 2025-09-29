@@ -418,9 +418,10 @@
                                 
                                 <!-- Actions -->
                                 <div class="col-md-2 col-lg-1 todo-actions">
-                                    <form th:action="@{'/todos/' + ${todo.id} + '/delete'}" method="post" 
-                                          class="d-inline" onclick="return confirm('Are you sure you want to delete this task?')">
-                                        <button type="submit" class="btn btn-outline-danger btn-action">
+                                    <form class="d-inline">
+                                        <button type="button"
+                                                class="btn btn-outline-danger btn-action delete-btn"
+                                                th:data-action="@{'/todos/' + ${todo.id} + '/delete'}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
@@ -443,6 +444,28 @@
             </div>
             <div class="toast-body">
                 Task order updated successfully!
+            </div>
+        </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="post">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -528,6 +551,20 @@
         if ('ontouchstart' in window) {
             document.body.style.touchAction = 'pan-y';
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            const deleteForm = document.getElementById('deleteForm');
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    deleteForm.setAttribute('action', action);
+                    deleteModal.show();
+                });
+            });
+        });
+
     </script>
 </body>
 </html>
