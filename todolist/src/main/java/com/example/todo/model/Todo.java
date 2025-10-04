@@ -32,9 +32,14 @@ public class Todo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    // New field for drag and drop ordering
+    // Drag & Drop ordering
     @Column(name = "display_order")
     private Integer displayOrder = 0;
+
+    // 👇 Kullanıcı ilişkisi
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private user user;
 
     @PrePersist
     public void prePersist() {
@@ -70,4 +75,7 @@ public class Todo {
 
     public Integer getDisplayOrder() { return displayOrder; }
     public void setDisplayOrder(Integer displayOrder) { this.displayOrder = displayOrder; }
+
+    public user getUser() { return user; }
+    public void setUser(user user) { this.user = user; }
 }
